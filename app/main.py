@@ -14,7 +14,7 @@ def home_page():
     return {"message": "Приветствуем"}
 
 @app.get("/students")
-def get_all_students(course: Optional[int] = None, student_id: Optional[int] = None, major: Optional[str] = None):
+def get_all_students(course: Optional[int] = None, student_id: Optional[int] = None, major: Optional[str] = None, enrollment_year: Optional[int] = None):
     students = json_to_list(path_to_json)
     if course is not None:
         return_list = []
@@ -34,9 +34,17 @@ def get_all_students(course: Optional[int] = None, student_id: Optional[int] = N
             if student["major"] == major:
                 return_list.append(student)
         return return_list
+    if enrollment_year is not None:
+        return_list = []
+        for student in students:
+            if student["enrollment_year"] == enrollment_year:
+                return_list.append(student)
+        return return_list
     else:
         return students
 """Метод с параметрами запроса course(курс), student_id(id студента) и major(специальность/профиль)"""
+
+
 # @app.get("/students/course/{course}")
 # def get_students_by_course(course: int):
 #     students = json_to_list(path_to_json)
@@ -46,6 +54,8 @@ def get_all_students(course: Optional[int] = None, student_id: Optional[int] = N
 #             return_list.append(student)
 #     return return_list
 """Метод вывода студентов по курсу"""
+
+
 # @app.get("/students/{student_id}")
 # def get_student_by_id(student_id: int):
 #     students = json_to_list(path_to_json)
